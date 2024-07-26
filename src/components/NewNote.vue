@@ -3,7 +3,7 @@
     <div class="new-note">
         <input type="text" v-model="newNote.title">
         <textarea v-model="newNote.descr"></textarea>
-        <button @click="addNote">Add Note</button>
+        <button @click="addNote" class="btn btnPrimary">Add Note</button>
     </div>
 </template>
 
