@@ -9,6 +9,7 @@
             <div class="note-body">
                 <p>{{ note.descr }}</p>
                 <span>{{ note.date }}</span>
+                <p>{{ note.priority }}</p>
             </div>
         </div>
     </div>

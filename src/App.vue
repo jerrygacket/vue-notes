@@ -54,28 +54,33 @@ export default {
       search: '',
       newNote: {
               title: '',
-              descr: ''
+              descr: '',
+              priority: 'p1',
           },
       notes: [
           {
               title: 'title 1 note',
               descr: 'note descr 1',
-              date: new Date(Date.now()).toLocaleString()
+              date: new Date(Date.now()).toLocaleString(),
+              priority: 'p1'
           },
           {
               title: 'title 2 note',
               descr: 'note descr 3',
-              date: new Date(Date.now()).toLocaleString()
+              date: new Date(Date.now()).toLocaleString(),
+              priority: 'p2'
           },
           {
               title: 'title 3 note',
               descr: 'note descr 3',
-              date: new Date(Date.now()).toLocaleString()
+              date: new Date(Date.now()).toLocaleString(),
+              priority: 'p3'
           },
           {
               title: 'title 4 note',
               descr: 'note descr 4',
-              date: new Date(Date.now()).toLocaleString()
+              date: new Date(Date.now()).toLocaleString(),
+              priority: 'p1'
           }
       ]
     }
@@ -83,7 +88,7 @@ export default {
   methods: {
       addNote() {
           console.log(this.newNote);
-          let {title, descr} = this.newNote;
+          let {title, descr, priority} = this.newNote;
           if (title === '') {
               this.message = 'empty title'
               return false;
@@ -91,10 +96,12 @@ export default {
           this.notes.push({
               title,
               descr,
-              date: new Date(Date.now()).toLocaleString()
+              date: new Date(Date.now()).toLocaleString(),
+              priority
           });
           this.newNote.title = '';
           this.newNote.descr = '';
+          this.newNote.priority = 'p1';
           this.message = null;
       },
       removeNote (id) {
