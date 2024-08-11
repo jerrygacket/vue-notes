@@ -59,24 +59,28 @@ export default {
           },
       notes: [
           {
+              id: 1,
               title: 'title 1 note',
               descr: 'note descr 1',
               date: new Date(Date.now()).toLocaleString(),
               priority: 'p1'
           },
           {
+            id: 2,
               title: 'title 2 note',
               descr: 'note descr 3',
               date: new Date(Date.now()).toLocaleString(),
               priority: 'p2'
           },
           {
+            id: 3,
               title: 'title 3 note',
               descr: 'note descr 3',
               date: new Date(Date.now()).toLocaleString(),
               priority: 'p3'
           },
           {
+            id: 4,
               title: 'title 4 note',
               descr: 'note descr 4',
               date: new Date(Date.now()).toLocaleString(),
@@ -93,7 +97,9 @@ export default {
               this.message = 'empty title'
               return false;
           }
+          let newId = Math.max(...this.notes.map(o => o.id))
           this.notes.push({
+            id:newId,
               title,
               descr,
               date: new Date(Date.now()).toLocaleString(),
@@ -106,7 +112,7 @@ export default {
       },
       removeNote (id) {
         this.notes.splice(id, 1);
-      }
+      },
   },
   computed: {
     notesFilter () {

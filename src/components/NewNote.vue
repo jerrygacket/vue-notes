@@ -3,7 +3,10 @@
     <div class="new-note">
         <input type="text" v-model="newNote.title">
         <template v-for="(priorityItem, index) in priority">
-            <input type="radio" :id="index" v-model="newNote.priority" :value="priorityItem" :checked="index === 0" name="p" v-bind:key="index">
+            <div v-bind:key="index" class="form-check">
+                <input type="radio" class="form-check-input" :id="index" v-model="newNote.priority" :value="priorityItem" :checked="index === 0" name="p">
+                <label class="form-check-label" v-bind:for="index">{{ priorityItem }}</label>
+            </div>
         </template>
         <textarea v-model="newNote.descr"></textarea>
         <button @click="addNote" class="btn btnPrimary">Add Note</button>
