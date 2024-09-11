@@ -2,18 +2,24 @@
     <!-- note list -->
     <div class="notes">
         <template v-for="(note, index) in notes">
-            <div class="note" :class="{ full: !grid, important_note: note.priority === 'p2', vip_note: note.priority === 'p3' }" :key="index">
-            <div class="note-header" :class="{ full: !grid }" @click="editNote(index)">
-                <p v-if="loadedNote.id === 0 || loadedNote.id !== note.id" class="note-title" >{{ note.title }}</p>
-                <input v-if="loadedNote.id > 0 && loadedNote.id === note.id" :ref="tilteEdit" type="text" v-model="loadedNote.title" @blur="resetNote">
-                <p class="btn-remove" @click="removeNote(index)">x</p>
+            <div class="note" :class="{ full: !grid, important_note: note.priority === 'p2', vip_note: note.priority === 'p3' }" :key="note.id">
+
+                {{ note }}
+                <div class="note-header" :class="{ full: !grid }">
+
+                    <p :style="{display: loadedNote.id === 0 || loadedNote.id !== note.id ? 'block' : 'none'}" class="note-title"  @click="editNote(note.id)">{{ note.title }}</p>
+
+                    <input :style="{display: loadedNote.id > 0 && loadedNote.id === note.id ? 'block' : 'none'}" type="text" :ref="'tilteEdit' + note.id" v-model="loadedNote.title" @blur="saveNote(index)">
+
+                    <p class="btn-remove" @click="removeNote(index)">x</p>
+                    
+                </div>
+                <div class="note-body">
+                    <p>{{ note.descr }}</p>
+                    <span>{{ note.date }}</span>
+                    <p>{{ note.priority }}</p>
+                </div>
             </div>
-            <div class="note-body">
-                <p>{{ note.descr }}</p>
-                <span>{{ note.date }}</span>
-                <p>{{ note.priority }}</p>
-            </div>
-        </div>
         </template>
     
         
@@ -21,6 +27,7 @@
 </template>
 
 <script>
+import { nextTick } from 'vue';
 export default {
     props: {
         notes: {
@@ -40,7 +47,7 @@ export default {
                 descr: '',
                 date: new Date(Date.now()).toLocaleString(),
                 priority: '',
-            },
+            }
         }
     },
     methods: {
@@ -48,17 +55,19 @@ export default {
             console.log(`Node ${id} removed`);
             this.$emit('remove', id)
         },
-        editNote (id) {
-            console.log(`Node ${id} edit`);
-            this.loadedNote = this.notes[id];
-            this.$refs.tilteEdit.focus();
+        async editNote (id) {
+            this.loadedNote = JSON.parse(JSON.stringify(this.notes.find((element) => element.id === id)));
+            await nextTick();
+            this.$refs['tilteEdit' +this.loadedNote.id][0].focus();
         },
-        saveNote (id) {
-            console.log(`Node ${id} save`);
-            this.$emit('save', id, this.loadedNote)
+        saveNote () {
+            if (this.loadedNote.id > 0) {
+                console.log(this.loadedNote.title);
+                this.$emit('saveNote', JSON.parse(JSON.stringify(this.loadedNote)));
+                this.resetNote();
+            }
         },
         resetNote () {
-            console.log(`hide input`);
             this.loadedNote.id = 0;
         },
     }

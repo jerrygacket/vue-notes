@@ -26,7 +26,7 @@
             </div>
           </div>
 
-          <notesList :notes="notesFilter" :grid="grid" @remove="removeNote" />
+          <notesList :notes="notesFilter" :grid="grid" @remove="removeNote" @saveNote="saveNote" />
         </div>
       </section>
     </div>
@@ -39,6 +39,7 @@ import messageComponent from '@/components/MessageComponent.vue'
 import newNote from '@/components/NewNote.vue'
 import notesList from '@/components/NotesList.vue'
 import searchNotes from '@/components/SearchNotes.vue'
+
 export default {
   components: {
     messageComponent,
@@ -57,6 +58,13 @@ export default {
               descr: '',
               priority: 'p1',
           },
+      loadedNote: {
+            id: 0,
+            title: '',
+            descr: '',
+            date: new Date(Date.now()).toLocaleString(),
+            priority: '',
+        },
       notes: [
           {
               id: 1,
@@ -109,6 +117,15 @@ export default {
           this.newNote.descr = '';
           this.newNote.priority = 'p1';
           this.message = null;
+      },
+      saveNote(loadedNote) {
+          console.log(loadedNote);
+          let note = this.notes.find((element) => element.id === loadedNote.id);
+          console.log(note);
+          note.title = loadedNote.title;
+          note.descr = loadedNote.descr;
+          note.date = loadedNote.date;
+          note.priority = loadedNote.priority;
       },
       removeNote (id) {
         this.notes.splice(id, 1);
