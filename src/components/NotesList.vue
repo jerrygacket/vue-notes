@@ -62,6 +62,7 @@ export default {
         },
         saveNote () {
             if (this.loadedNote.id > 0) {
+                this.loadedNote.date = new Date(Date.now()).toLocaleString();
                 console.log(this.loadedNote.title);
                 this.$emit('saveNote', JSON.parse(JSON.stringify(this.loadedNote)));
                 this.resetNote();
