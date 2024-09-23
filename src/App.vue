@@ -4,7 +4,43 @@
     <div class="content-wrapper">
       <section>
         <div class="container">
+
+          <button class="btn btnPrimary" @click="modalFirst = !modalFirst">show first modal</button>
+          <button class="btn btnPrimary" @click="modalSecond.show = !modalSecond.show">show modal withForm</button>
+          <button class="btn btnPrimary" @click="modalValidate = !modalPassword">show modal withForm validation</button>
+          <button class="btn btnPrimary" @click="modalPassword = !modalValidate">show modal with password</button>
+
+          <modalComponent 
+          v-show="modalFirst" 
+          title="modal 1"
+          @close="modalFirst = false">
           
+          <template v-slot:body>
+            <h1>Здесь мог быть заголовок страницы</h1>
+            <button class="btn btnDefaul" @click="modalFirst = false">Close modal</button>
+          </template>
+
+        </modalComponent>
+
+        <modalComponent 
+          v-show="modalSecond.show" 
+          title="modal with form"
+          @close="modalSecond.show = false">
+          
+          <template v-slot:body>
+            <form @submit.prevent="submitSecondForm">
+              <label>Name:</label>
+              <input type="text" v-model="modalSecond.name">
+              <label>Email:</label>
+              <input type="text" v-model="modalSecond.email">
+              <button type="submit" class="btn btnDefaul" @click="modalSecond.show = false">Submit</button>
+            </form>
+          </template>
+
+        </modalComponent>
+
+        <modalValidate v-show="modalValidate" @close="modalValidate = false" />
+        <modalPassword v-show="modalPassword" @close="modalPassword = false" />
 
           <messageComponent v-if="message" :message="message" />
 
@@ -39,13 +75,19 @@ import messageComponent from '@/components/MessageComponent.vue'
 import newNote from '@/components/NewNote.vue'
 import notesList from '@/components/NotesList.vue'
 import searchNotes from '@/components/SearchNotes.vue'
+import modalComponent from '@/components/ModalComponent.vue'
+import modalValidate from '@/components/ModalValidate.vue'
+import modalPassword from '@/components/ModalPassword.vue'
 
 export default {
   components: {
     messageComponent,
     newNote,
     notesList,
-    searchNotes
+    searchNotes,
+    modalComponent,
+    modalValidate,
+    modalPassword
   },
   data () {
     return {
@@ -53,6 +95,14 @@ export default {
       message: null,
       grid: true,
       search: '',
+      modalFirst: false,
+      modalValidate: false,
+      modalPassword: false,
+      modalSecond: {
+        show: false,
+        name: '',
+        email: '',
+      },
       newNote: {
               title: '',
               descr: '',
@@ -98,6 +148,19 @@ export default {
     }
   },
   methods: {
+      submitSecondForm() {
+        let data = {
+          name: this.modalSecond.name,
+          email: this.modalSecond.email,
+        }
+        console.log(data);
+        this.clearSecondForm()
+      },
+      clearSecondForm() {
+        this.modalSecond.name = '';
+        this.modalSecond.email = '';
+        this.modalSecond.show = false;
+      },
       addNote() {
           console.log(this.newNote);
           let {title, descr, priority} = this.newNote;
