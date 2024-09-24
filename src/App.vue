@@ -9,6 +9,8 @@
           <button class="btn btnPrimary" @click="modalSecond.show = !modalSecond.show">show modal withForm</button>
           <button class="btn btnPrimary" @click="modalValidate = !modalPassword">show modal withForm validation</button>
           <button class="btn btnPrimary" @click="modalPassword = !modalValidate">show modal with password</button>
+          <button class="btn btnPrimary" @click="modalLogin = !modalLogin">show login</button>
+          <button class="btn btnPrimary" @click="modalRegister = !modalRegister">show modalRegister</button>
 
           <modalComponent 
           v-show="modalFirst" 
@@ -41,6 +43,8 @@
 
         <modalValidate v-show="modalValidate" @close="modalValidate = false" />
         <modalPassword v-show="modalPassword" @close="modalPassword = false" />
+        <modalLogin v-show="modalLogin" @close="modalLogin = false" @switchModal = "switchModal" />
+        <modalRegister v-show="modalRegister" @close="modalRegister = false" @switchModal = "switchModal" />
 
           <messageComponent v-if="message" :message="message" />
 
@@ -78,6 +82,8 @@ import searchNotes from '@/components/SearchNotes.vue'
 import modalComponent from '@/components/ModalComponent.vue'
 import modalValidate from '@/components/ModalValidate.vue'
 import modalPassword from '@/components/ModalPassword.vue'
+import modalLogin from '@/components/ModalLogin.vue'
+import modalRegister from '@/components/ModalRegister.vue'
 
 export default {
   components: {
@@ -87,7 +93,9 @@ export default {
     searchNotes,
     modalComponent,
     modalValidate,
-    modalPassword
+    modalPassword,
+    modalLogin,
+    modalRegister
   },
   data () {
     return {
@@ -98,6 +106,8 @@ export default {
       modalFirst: false,
       modalValidate: false,
       modalPassword: false,
+      modalLogin: false,
+      modalRegister: false,
       modalSecond: {
         show: false,
         name: '',
@@ -192,6 +202,14 @@ export default {
       },
       removeNote (id) {
         this.notes.splice(id, 1);
+      },
+      switchModal (modal) {
+        if (modal === 'login') {
+          this.modalLogin = true;
+        }
+        if (modal === 'register') {
+          this.modalRegister = true;
+        }
       },
   },
   computed: {
