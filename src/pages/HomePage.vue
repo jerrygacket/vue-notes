@@ -2,7 +2,7 @@
   <div class="wrapper-content wrapper-content--fixed">
       <section>
         <div class="container">
-
+          <p>{{ storeMessage }}</p>
           <button class="btn btnPrimary" @click="modalFirst = !modalFirst">show first modal</button>
           <button class="btn btnPrimary" @click="modalSecond.show = !modalSecond.show">show modal withForm</button>
           <button class="btn btnPrimary" @click="modalValidate = !modalPassword">show modal withForm validation</button>
@@ -222,6 +222,9 @@ export default {
       })
 
       return arr;
+    },
+    storeMessage () {
+      return this.$store.getters.getMessage
     }
   }
 }
