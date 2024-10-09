@@ -44,9 +44,9 @@
         <modalLogin v-show="modalLogin" @close="modalLogin = false" @switchModal = "switchModal" />
         <modalRegister v-show="modalRegister" @close="modalRegister = false" @switchModal = "switchModal" />
 
-          <messageComponent v-if="message" :message="message" />
+          
 
-          <newNote :note="newNote" @addNote="addNote" />
+          <newNote />
 
           <div class="note-header">
 
@@ -64,14 +64,14 @@
             </div>
           </div>
 
-          <notesList :notes="notesFilter" :grid="grid" @remove="removeNote" @saveNote="saveNote" />
+          <notesList :notes="notesFilter" :grid="grid"/>
         </div>
       </section>
     </div>
 </template>
 
     <script>
-import messageComponent from '@/components/MessageComponent.vue'
+
 import newNote from '@/components/NewNote.vue'
 import notesList from '@/components/NotesList.vue'
 import searchNotes from '@/components/SearchNotes.vue'
@@ -83,7 +83,6 @@ import modalRegister from '@/components/ModalRegister.vue'
 
 export default {
   components: {
-    messageComponent,
     newNote,
     notesList,
     searchNotes,
@@ -96,7 +95,6 @@ export default {
   data () {
     return {
       title: 'notes app',
-      message: null,
       grid: true,
       search: '',
       modalFirst: false,
@@ -104,16 +102,12 @@ export default {
       modalPassword: false,
       modalLogin: false,
       modalRegister: false,
+      notes: [],
       modalSecond: {
         show: false,
         name: '',
         email: '',
       },
-      newNote: {
-              title: '',
-              descr: '',
-              priority: 'p1',
-          },
       loadedNote: {
             id: 0,
             title: '',
@@ -121,37 +115,10 @@ export default {
             date: new Date(Date.now()).toLocaleString(),
             priority: '',
         },
-      notes: [
-          {
-              id: 1,
-              title: 'title 1 note',
-              descr: 'note descr 1',
-              date: new Date(Date.now()).toLocaleString(),
-              priority: 'p1'
-          },
-          {
-            id: 2,
-              title: 'title 2 note',
-              descr: 'note descr 3',
-              date: new Date(Date.now()).toLocaleString(),
-              priority: 'p2'
-          },
-          {
-            id: 3,
-              title: 'title 3 note',
-              descr: 'note descr 3',
-              date: new Date(Date.now()).toLocaleString(),
-              priority: 'p3'
-          },
-          {
-            id: 4,
-              title: 'title 4 note',
-              descr: 'note descr 4',
-              date: new Date(Date.now()).toLocaleString(),
-              priority: 'p1'
-          }
-      ]
     }
+  },
+  created() {
+    this.notes = this.$store.getters.getNotes
   },
   methods: {
       submitSecondForm() {
@@ -166,38 +133,6 @@ export default {
         this.modalSecond.name = '';
         this.modalSecond.email = '';
         this.modalSecond.show = false;
-      },
-      addNote() {
-          console.log(this.newNote);
-          let {title, descr, priority} = this.newNote;
-          if (title === '') {
-              this.message = 'empty title'
-              return false;
-          }
-          let newId = Math.max(...this.notes.map(o => o.id))
-          this.notes.push({
-            id:newId,
-              title,
-              descr,
-              date: new Date(Date.now()).toLocaleString(),
-              priority
-          });
-          this.newNote.title = '';
-          this.newNote.descr = '';
-          this.newNote.priority = 'p1';
-          this.message = null;
-      },
-      saveNote(loadedNote) {
-          console.log(loadedNote);
-          let note = this.notes.find((element) => element.id === loadedNote.id);
-          console.log(note);
-          note.title = loadedNote.title;
-          note.descr = loadedNote.descr;
-          note.date = loadedNote.date;
-          note.priority = loadedNote.priority;
-      },
-      removeNote (id) {
-        this.notes.splice(id, 1);
       },
       switchModal (modal) {
         if (modal === 'login') {

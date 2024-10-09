@@ -1,6 +1,7 @@
 <template>
     <!-- new note -->
     <div class="new-note">
+        <messageComponent v-if="message" :message="message" />
         <input type="text" v-model="newNote.title">
         <template v-for="(priorityItem, index) in priority">
             <div v-bind:key="index" class="form-check">
@@ -14,19 +15,24 @@
 </template>
 
 <script>
+import messageComponent from '@/components/MessageComponent.vue'
+// import { nextTick } from 'vue';
+
 export default {
-    props: {
-        note: {
-            type: Object,
-            required: true
-        }
+    components: {
+        messageComponent
     },
     // mutate props is antipattern!
     // https://v2.vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow
     // define a local data property that uses the prop as its initial value
     data: function () {
         return {
-            newNote: this.note,
+            newNote: {
+                title: '',
+                descr: '',
+                priority: 'p1',
+            },
+            message: null,
             priority: [
                 'p1',
                 'p2',
@@ -37,7 +43,19 @@ export default {
     methods: {
         addNote () {
             console.log(this.newNote);
-            this.$emit('addNote', this.newNote);
+            let newNote =  JSON.parse(JSON.stringify(this.newNote));
+            if (this.newNote.title === '') {
+                this.message = 'empty title'
+                return false;
+            }
+            
+            this.newNote.date = new Date(Date.now()).toLocaleString();
+            this.$store.dispatch('addNote', newNote);
+            // await nextTick();
+            this.newNote.title = '';
+            this.newNote.descr = '';
+            this.newNote.priority = 'p1';
+            this.message = null;
         }
     }
 }

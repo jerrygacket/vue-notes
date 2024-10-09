@@ -11,7 +11,7 @@
 
                     <input :style="{display: loadedNote.id > 0 && loadedNote.id === note.id ? 'block' : 'none'}" type="text" :ref="'tilteEdit' + note.id" v-model="loadedNote.title" @blur="saveNote(index)">
 
-                    <p class="btn-remove" @click="removeNote(index)">x</p>
+                    <p class="btn-remove" @click="removeNote(note.id)">x</p>
                     
                 </div>
                 <div class="note-body">
@@ -52,8 +52,8 @@ export default {
     },
     methods: {
         removeNote (id) {
-            console.log(`Node ${id} removed`);
-            this.$emit('remove', id)
+            console.log(id);
+            this.$store.dispatch('removeNote', id);
         },
         async editNote (id) {
             this.loadedNote = JSON.parse(JSON.stringify(this.notes.find((element) => element.id === id)));
@@ -64,7 +64,7 @@ export default {
             if (this.loadedNote.id > 0) {
                 this.loadedNote.date = new Date(Date.now()).toLocaleString();
                 console.log(this.loadedNote.title);
-                this.$emit('saveNote', JSON.parse(JSON.stringify(this.loadedNote)));
+                this.$store.dispatch('editNote', this.loadedNote);
                 this.resetNote();
             }
         },

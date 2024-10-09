@@ -33,13 +33,13 @@ export default {
     },
     mutations: {
         addNote(state, payload) {
-            if(typeof payload.id === 'undefined' || typeof state.notesList.find((element) => element.id === +payload.id) !== 'undefined') {
-                payload.id = state.notesList.reduce((a, b) => Math.max(a, b), 0) + 1
-            }
+            payload.id = Math.max(...state.notesList.map(o => o.id)) + 1
             state.notesList.push(payload)
         },
         removeNote(state, payload) {
             let noteIndex = state.notesList.findIndex((element) => element.id === +payload);
+            console.log(payload)
+            console.log(noteIndex)
             if(typeof noteIndex !== 'undefined') {
                 state.notesList.splice(noteIndex, 1);
             }
