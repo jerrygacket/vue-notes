@@ -11,7 +11,7 @@ export default {
             {
                 id: 2,
                 title: 'title 2 note',
-                descr: 'note descr 3',
+                descr: 'note descr 2',
                 date: new Date(Date.now()).toLocaleString(),
                 priority: 'p2'
             },
@@ -50,7 +50,7 @@ export default {
                 console.log('edit ', state.notesList[noteIndex]);
                 state.notesList[noteIndex].title = payload.title;
                 state.notesList[noteIndex].descr = payload.descr;
-                state.notesList[noteIndex].date = payload.date;
+                state.notesList[noteIndex].date = new Date(Date.now()).toLocaleString();
                 state.notesList[noteIndex].priority = payload.priority;
             }
             
@@ -68,8 +68,19 @@ export default {
         }
     },
     getters: {
-        getNotes(state) {
-            return state.notesList
+        getNotes: (state) => (search) => {
+            let arr = state.notesList;
+        
+            if (!search) return arr
+
+            search = search.trim().toLowerCase();
+
+            arr = arr.filter(function(item) {
+                if (item.title.toLowerCase().indexOf(search) !== -1)
+                return item
+            });
+            
+            return arr;
         },
         getNoteById: (state) => (id) => {
             state.notesList.find((element) => element.id === +id)

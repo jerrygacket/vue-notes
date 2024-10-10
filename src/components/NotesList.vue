@@ -56,13 +56,12 @@ export default {
             this.$store.dispatch('removeNote', id);
         },
         async editNote (id) {
-            this.loadedNote = JSON.parse(JSON.stringify(this.notes.find((element) => element.id === id)));
+            this.loadedNote = JSON.parse(JSON.stringify(this.$store.getNoteById(id)));
             await nextTick();
             this.$refs['tilteEdit' +this.loadedNote.id][0].focus();
         },
         saveNote () {
             if (this.loadedNote.id > 0) {
-                this.loadedNote.date = new Date(Date.now()).toLocaleString();
                 console.log(this.loadedNote.title);
                 this.$store.dispatch('editNote', this.loadedNote);
                 this.resetNote();

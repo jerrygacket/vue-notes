@@ -102,7 +102,6 @@ export default {
       modalPassword: false,
       modalLogin: false,
       modalRegister: false,
-      notes: [],
       modalSecond: {
         show: false,
         name: '',
@@ -116,9 +115,6 @@ export default {
             priority: '',
         },
     }
-  },
-  created() {
-    this.notes = this.$store.getters.getNotes
   },
   methods: {
       submitSecondForm() {
@@ -145,18 +141,7 @@ export default {
   },
   computed: {
     notesFilter () {
-      let arr = this.notes,
-        search = this.search;
-      if (!search) return arr
-
-      search = search.trim().toLowerCase();
-
-      arr = arr.filter(function(item) {
-        if (item.title.toLowerCase().indexOf(search) !== -1)
-          return item
-      })
-
-      return arr;
+      return this.$store.getters.getNotes(this.search)
     },
     storeMessage () {
       return this.$store.getters.getMessage
