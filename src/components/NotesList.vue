@@ -56,7 +56,7 @@ export default {
             this.$store.dispatch('removeNote', id);
         },
         async editNote (id) {
-            this.loadedNote = JSON.parse(JSON.stringify(this.$store.getNoteById(id)));
+            this.loadedNote = this.$store.getters.getNoteById(id);
             await nextTick();
             this.$refs['tilteEdit' +this.loadedNote.id][0].focus();
         },

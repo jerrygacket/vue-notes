@@ -69,21 +69,17 @@ export default {
     },
     getters: {
         getNotes: (state) => (search) => {
-            let arr = state.notesList;
-        
-            if (!search) return arr
+            if (!search) return state.notesList
 
             search = search.trim().toLowerCase();
 
-            arr = arr.filter(function(item) {
+            return state.notesList.filter(function(item) {
                 if (item.title.toLowerCase().indexOf(search) !== -1)
                 return item
             });
-            
-            return arr;
         },
         getNoteById: (state) => (id) => {
-            state.notesList.find((element) => element.id === +id)
+            return state.notesList.find((element) => element.id === +id)
         }
     },
 }

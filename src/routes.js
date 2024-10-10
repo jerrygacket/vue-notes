@@ -8,6 +8,7 @@ Vue.use(Router)
 import HomePage from '@/pages/HomePage'
 import ExamplePage from '@/pages/ExamplePage'
 import NotFound from '@/pages/404Page'
+import ModalsPage from '@/pages/ModalsPage'
 
 // routering
 export default new Router({
@@ -27,6 +28,11 @@ export default new Router({
             path: '*',
             name: 'NotFound',
             component: NotFound
+        },
+        {
+            path: '/modals',
+            name: 'modals',
+            component: ModalsPage
         },
     ]
 })

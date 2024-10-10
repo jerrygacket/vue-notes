@@ -27,6 +27,7 @@ export default {
       links: [
         { title: 'Home', url: '/' },
         { title: 'Example', url: '/example' },
+        { title: 'Modals', url: '/modals' },
       ]
     }
   }
